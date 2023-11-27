@@ -99,11 +99,20 @@ Suggestion : empêcher la saisie d'un document qui a une extension différente d
 #### - Code final
 
 ```js
- const fileExtension = fileName.split(".")[1];
-    const validFileExtensions = ["jpg", "jpeg", "png"];
-    if ( fileExtension !== validFileExtensions ) {
-      alert("Le fichier doit avoir une extension jpg, jpeg ou png.");
-      e.target.value = null;
+  const validFileExtensions = ["jpg", "jpeg", "png"];
+    if (!validFileExtensions.includes(file.type.split("/")[1])) {
+      const errorMessage = this.document.createElement("div");
+      errorMessage.classList.add("error-message");
+      errorMessage.innerHTML =
+        "Seuls les justificatifs au format JPEG, JPG ou PNG sont acceptés.";
+      const fileInput = this.document.querySelector(
+        `input[data-testid="file"]`
+      );
+      fileInput.parentNode.appendChild(errorMessage);
+      this.document.querySelector(`input[data-testid="file"]`).value = null;
+
+      return false;
+   
     }
 ```
 
